@@ -1,5 +1,5 @@
 import Logo from "./logo";
-import SidebarRoutes from "./sidebarRoutes";
+import SidebarRoutes from "./sidebar-routes";
 
 const Sidebar = () => {
   return (
