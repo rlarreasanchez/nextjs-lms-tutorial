@@ -100,14 +100,17 @@ const ChapterDescriptionForm = ({
             <FormField
               control={form.control}
               name="description"
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <Editor {...field} value={field.value || ""} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
+              render={({ field }) => {
+                const { ref, ...fields } = field;
+                return (
+                  <FormItem>
+                    <FormControl>
+                      <Editor {...fields} value={fields.value || ""} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                );
+              }}
             />
             <div className="flex items-center gap-x-2">
               <Button disabled={!isValid || isSubmitting} type="submit">
