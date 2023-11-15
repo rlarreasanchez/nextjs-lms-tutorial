@@ -36,6 +36,7 @@ export const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(
             role="combobox"
             aria-expanded={open}
             className="justify-between w-full"
+            ref={ref}
           >
             {value
               ? options.find((option) => option.value === value)?.label
