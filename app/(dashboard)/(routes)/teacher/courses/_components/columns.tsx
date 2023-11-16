@@ -1,9 +1,20 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
 import { Course } from "@prisma/client";
 import { ColumnDef } from "@tanstack/react-table";
-import { ArrowUpDown, MoreHorizontal } from "lucide-react";
+import { ArrowUpDown, MoreHorizontal, Pencil } from "lucide-react";
+
+import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import Link from "next/link";
+import { cn } from "@/lib/utils";
+import { Badge } from "@/components/ui/badge";
+import { formatPrice } from "@/lib/formats";
 
 export const columns: ColumnDef<Course>[] = [
   {
@@ -33,6 +44,12 @@ export const columns: ColumnDef<Course>[] = [
         </Button>
       );
     },
+    cell: ({ row }) => {
+      const price: number = row.getValue("price") || 0;
+      const formatted = formatPrice(price);
+
+      return <div>{formatted}</div>;
+    },
   },
   {
     accessorKey: "isPublished",
@@ -45,6 +62,39 @@ export const columns: ColumnDef<Course>[] = [
           Published
           <ArrowUpDown className="w-4 h-4 ml-2" />
         </Button>
+      );
+    },
+    cell: ({ row }) => {
+      const isPublished = row.getValue("isPublished") || false;
+
+      return (
+        <Badge className={cn("bg-slate-500", isPublished && "bg-sky-700")}>
+          {isPublished ? "Published" : "Draft"}
+        </Badge>
+      );
+    },
+  },
+  {
+    id: "actions",
+    cell: ({ row }) => {
+      const { id } = row.original;
+      return (
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button className="w-8 h-4 p-0" variant="ghost">
+              <span className="sr-only">Open menu</span>
+              <MoreHorizontal className="w-4 h-4" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <Link href={`/teacher/courses/${id}`}>
+              <DropdownMenuItem>
+                <Pencil className="w-4 h-4 mr-2" />
+                Edit
+              </DropdownMenuItem>
+            </Link>
+          </DropdownMenuContent>
+        </DropdownMenu>
       );
     },
   },
